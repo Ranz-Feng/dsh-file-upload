@@ -1,0 +1,19 @@
+# Bundle layer for dsh-file-upload.
+#
+# Declaring `dsh.bundle.patch` in package.json makes this file one of the
+# profile's patch layers, so installing the package is the whole installation:
+# `dsh plugin --profile web add <path>` installs it, sees the bundle
+# declaration, appends the package to `dsh.profile.bundles`, and this insert
+# mounts the row. Nothing about the profile has to be edited by hand.
+#
+# The row is addressed by `id`, so a deployment that wants different limits
+# overrides it from `$DSH_HOME/profiles/<name>/cordis.patch.yml` without
+# touching this file:
+#
+#   - id: file-upload
+#     config:
+#       maxFileBytes: 104857600
+#
+- insert:
+    - id: file-upload
+      name: dsh-file-upload

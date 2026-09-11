@@ -1,0 +1,7 @@
+# The dev symlink that lets `npm test` resolve the harness's own dependencies.
+# The plugin declares them as peerDependencies and ships no dependencies of its own.
+node_modules/
+
+# Local verification output
+*.log
+.DS_Store
