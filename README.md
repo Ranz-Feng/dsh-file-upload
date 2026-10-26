@@ -14,6 +14,8 @@
 - 宿主从不改写你的输入，也不把文件内容偷偷塞进上下文。
 
 背景：DSH 自带的附件通道只接受四种栅格图片，`dsh-attachment` 的媒体类型是写死的、存储 API 全是 `…Image`，所以 PDF/CSV/压缩包这类文件本来没有入口。这个插件补的就是这个语义缺口。
+<img width="2906" height="1668" alt="image" src="https://github.com/user-attachments/assets/e47efa48-35ba-4370-9ef6-8ce0c717fb7d" />
+
 
 ## 安装
 
