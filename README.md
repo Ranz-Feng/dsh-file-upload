@@ -119,6 +119,8 @@ rm -rf "<你的项目>/.dsh/uploads/<sessionId>"     # 清理某个会话的上�
 | `session "…" has no working directory` | 该会话没有工作区（没有 cwd），没有可落盘的位置 |
 | `refusing to use ".dsh/uploads": it resolves outside the session workspace` | 你的 `.dsh` 是指向工作区外部的符号链接。这是被挡下来的，不是 bug |
 | `file "…" is … bytes; the limit is …` | 超过 `maxFileBytes`。改配置或换小文件 |
+| 点 📎 选完文件后毫无反应（按钮不变「…」、无任何提示、`.dsh/uploads` 也没有文件） | 客户端 bug 的经典陷阱：`event.target.files` 返回的是**活引用** FileList，先 `input.value = ""` 会把它当场清空，传给上传函数就成了空批次（所有浏览器表现一致）。必须先 `[...files]` 快照、再清空——`lib/client.js` 的 `onChange` 已按此写法实现 |
+| Safari：点 📎 弹窗能开、选完文件却没反应 | Safari 对"程序化 `.click()` 打开的非渲染文件控件"可能不派发 `change`。现实现用 `<label>` 原生激活 + sr-only 隐藏 + 焦点兜底，不再走程序化点击 `<input>` |
 | 文件上传后模型"看不到" | 确认草稿里那行 `@` 还在（你删了它，模型就只会看到纯文本） |
 
 ## 开发
