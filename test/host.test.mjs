@@ -145,6 +145,45 @@ test('a custom directory is honored and the gitignore guard does not apply', asy
 	await assert.rejects(() => stat(join(cwd, '.dsh')));
 });
 
+test('an exception in host-owned agent state is refused, never thrown at the carrier', async () => {
+	// The carrier reports a thrown handler as a bare `HTTP 500`, so the browser
+	// can only say "transport failure" and the person learns nothing. Anything
+	// this plugin does not control — an agent detaching mid-request, a host shape
+	// change — has to come back as a refusal that names the cause.
+	let registration;
+	const logged = [];
+	const ctx = {
+		effect: (callback) => {
+			callback();
+		},
+		connection: {
+			rpc: {
+				handle: (channel, handler, options) => {
+					registration = { channel, handler, options };
+					return async () => {};
+				},
+			},
+		},
+		get: () => ({
+			get: () => ({
+				get session() {
+					throw new Error('agent detached mid-flight');
+				},
+			}),
+		}),
+		logger: { warn: () => {}, error: (message) => logged.push(String(message)) },
+	};
+	apply(ctx, {});
+	const result = await registration.handler('save', {
+		sessionId: 's',
+		files: [{ name: 'a.txt', data: base64('a') }],
+	}, never);
+	assert.equal(result.ok, false);
+	assert.equal(result.error.code, 'internal');
+	assert.match(result.error.message, /agent detached mid-flight/);
+	assert.equal(logged.length, 1, 'the stack reaches the host log');
+});
+
 test('cancellation before the write is reported as cancelled', async () => {
 	const cwd = await workspace();
 	const { handler } = mount({ s: cwd });
