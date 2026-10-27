@@ -15,7 +15,7 @@
 
 背景：DSH 自带的附件通道只接受四种栅格图片，`dsh-attachment` 的媒体类型是写死的、存储 API 全是 `…Image`，所以 PDF/CSV/压缩包这类文件本来没有入口。这个插件补的就是这个语义缺口。
 <img width="2906" height="1668" alt="image" src="https://github.com/user-attachments/assets/e47efa48-35ba-4370-9ef6-8ce0c717fb7d" />
-<img width="2900" height="1806" alt="image" src="https://github.com/user-attachments/assets/f3b01132-8ec8-4b47-ac8d-2a0649fb4cfd" />
+<img width="2900" height="1564" alt="image" src="https://github.com/user-attachments/assets/2ba3c4e3-8a7f-435c-bbd9-5f250d8395dd" />
 
 
 ## 安装
